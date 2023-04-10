@@ -30,7 +30,6 @@ export const Post = ({
   }
 
   const onClickRemove = () => {};
-  console.log(id);
 
   return (
     <div className={clsx(styles.root, { [styles.rootFull]: isFullPost })}>

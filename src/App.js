@@ -1,10 +1,18 @@
+import React from "react";
 import Container from "@mui/material/Container";
 import { Routes, Route } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import { Header } from "./components";
 import { Home, FullPost, Registration, AddPost, Login } from "./pages";
+import { fetchAuthMe } from "./redux/slices/auth";
 
-function App() {
+const App = () => {
+  const dispatch = useDispatch();
+  React.useEffect(() => {
+    dispatch(fetchAuthMe());
+  }, []);
+
   return (
     <>
       <Header />
@@ -19,6 +27,6 @@ function App() {
       </Container>
     </>
   );
-}
+};
 
 export default App;

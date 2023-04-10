@@ -5,17 +5,24 @@ import { Link } from 'react-router-dom';
 import styles from './Header.module.scss';
 import Container from '@mui/material/Container';
 
-export const Header = () => {
-  const isAuth = false;
+import { useDispatch, useSelector } from 'react-redux';
+import { isAuthCheck, logout } from '../../redux/slices/auth';
 
-  const onClickLogout = () => {};
+export const Header = () => {
+  const dispatch = useDispatch();
+  const isAuth = useSelector(isAuthCheck);
+
+  const onClickLogout = () => {
+    dispatch(logout());
+    window.localStorage.removeItem('token');
+  };
 
   return (
     <div className={styles.root}>
       <Container maxWidth="lg">
         <div className={styles.inner}>
           <Link className={styles.logo} to="/">
-            <div>ARCHAKOV BLOG</div>
+            <div>GORBANEV BLOG</div>
           </Link>
           <div className={styles.buttons}>
             {isAuth ? (
