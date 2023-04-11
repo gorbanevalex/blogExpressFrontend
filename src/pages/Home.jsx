@@ -10,10 +10,12 @@ import { Post } from '../components/Post';
 import { TagsBlock } from '../components/TagsBlock';
 import { CommentsBlock } from '../components/CommentsBlock';
 import { fetchPosts, fetchTags } from '../redux/slices/posts';
+import { useSelect } from '@mui/base';
 
 export const Home = () => {
   const dispatch = useDispatch();
   const {tags, posts} = useSelector(state=>state.posts);
+  const userData = useSelector((state)=>state.auth.data);
   
   const postsIsLoading = posts.status === 'loading';
   const tagsIsLoading = tags.status === 'loading';
@@ -37,7 +39,7 @@ export const Home = () => {
               key={obj._id}
               id={obj._id}
               title={obj.title}
-              imageUrl={obj.imgUrl ?? '' }
+              imageUrl={obj.imgUrl ? `http://localhost:8000${obj.imgUrl}` : '' }
               user={{
                 avatarUrl: obj.author.avatarUrl ?? '',
                 fullName: obj.author.nickname,
@@ -46,7 +48,7 @@ export const Home = () => {
               viewsCount={obj.viewsCount}
               commentsCount={3}
               tags={obj.tags}
-              isEditable
+              isEditable={userData?.user._id === obj.author._id}
             />
           ))}
         </Grid>

@@ -9,11 +9,13 @@ import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
 
 import styles from './Login.module.scss';
-import { useDispatch } from 'react-redux';
-import { login } from '../../redux/slices/auth';
+import { useDispatch, useSelector } from 'react-redux';
+import { isAuthCheck, login } from '../../redux/slices/auth';
+import { Navigate } from 'react-router-dom';
 
 
 export const Registration = () => {
+  const isAuth = useSelector(isAuthCheck);
   const dispatch = useDispatch();
   const {register, handleSubmit, setError, formState:{ errors,isValid }} = useForm({
     defaultValues:{
@@ -35,6 +37,10 @@ export const Registration = () => {
         err.response.data.errors.map(item=>setError(item.param,{message:item.msg}))
       }
     })
+  }
+
+  if(isAuth){
+    return <Navigate to='/'/>
   }
 
   return (

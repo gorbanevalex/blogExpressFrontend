@@ -5,6 +5,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Post } from "../components/Post";
 import { Index } from "../components/AddComment";
 import { CommentsBlock } from "../components/CommentsBlock";
+import ReactMarkdown from "react-markdown";
 
 export const FullPost = () => {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ export const FullPost = () => {
       <Post
         id={post._id}
         title={post.title}
-        imageUrl={post.imgUrl}
+        imageUrl={post.imgUrl ? `http://localhost:8000${post.imgUrl}` : ''}
         user={{
           avatarUrl: post.author.avatarUrl,
           fullName: post.author.nickname,
@@ -38,9 +39,7 @@ export const FullPost = () => {
         tags={post.tags}
         isFullPost
       >
-        <p>
-          {post.text}
-        </p>
+        <ReactMarkdown children={post.text} />
       </Post> 
       <CommentsBlock
         items={[
