@@ -15,6 +15,9 @@ import { Navigate } from 'react-router-dom';
 
 
 export const Registration = () => {
+  const [imgUrl,setImgUrl] = React.useState('');
+  const fileInput = React.useRef(null);
+
   const isAuth = useSelector(isAuthCheck);
   const dispatch = useDispatch();
   const {register, handleSubmit, setError, formState:{ errors,isValid }} = useForm({
@@ -27,7 +30,11 @@ export const Registration = () => {
   })
 
   const onSubmit = async (values) =>{
-    axios.post('/user/register',values).then(res=>{
+    const params = {
+      ...values,
+      avatarUrl: imgUrl
+    }
+    axios.post('/user/register',params).then(res=>{
       dispatch(login(res.data));
       window.localStorage.setItem('token',res.data.token);
     }).catch(err=>{
@@ -36,6 +43,17 @@ export const Registration = () => {
       }else{
         err.response.data.errors.map(item=>setError(item.param,{message:item.msg}))
       }
+    })
+  }
+
+  const fileChange = () =>{
+    const file = fileInput.current.files[0];
+    const formData = new FormData();
+    formData.append('image',file);
+    axios.post('/upload',formData).then(res=>{
+      setImgUrl(res.data.url);
+    }).catch(err=>{
+      alert('При загрузке фотографии произошла ошибка!');
     })
   }
 
@@ -49,8 +67,9 @@ export const Registration = () => {
         Создание аккаунта
       </Typography>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className={styles.avatar}>
-          <Avatar sx={{ width: 100, height: 100 }} />
+        <div className={styles.avatar} onClick={()=>fileInput.current.click()}>
+          <input type="file" hidden ref={fileInput} onChange={fileChange} />
+          <Avatar sx={{ width: 100, height: 100 }} src={imgUrl ? `http://localhost:8000${imgUrl}` : ''}  />
         </div>
         <TextField 
           className={styles.field} 

@@ -6,14 +6,24 @@ import { Post } from "../components/Post";
 import { Index } from "../components/AddComment";
 import { CommentsBlock } from "../components/CommentsBlock";
 import ReactMarkdown from "react-markdown";
+import { useDispatch, useSelector } from "react-redux";
+import { isAuthCheck } from "../redux/slices/auth";
+import { changeComments } from "../redux/slices/posts";
 
 export const FullPost = () => {
+  const dispatch = useDispatch();
+  const comments = useSelector(state=>state.posts.commentsSelect);
+
+  const isAuth = useSelector(isAuthCheck);
   const navigate = useNavigate();
   const [post,setPost] = React.useState(null);
   const { id } = useParams();
 
   React.useEffect(()=>{
-    axios.get(`/posts/${id}`).then(({data}) => setPost(data)).catch(err=>{
+    axios.get(`/posts/${id}`).then(({data}) => {
+      setPost(data);
+      dispatch(changeComments(data.comments));
+    }).catch(err=>{
       alert('Не удалось получить статью!');
       navigate('/');
     });
@@ -35,32 +45,17 @@ export const FullPost = () => {
         }}
         createdAt={post.createdAt.substr(0,10)}
         viewsCount={post.viewsCount}
-        commentsCount={3}
+        commentsCount={comments.length}
         tags={post.tags}
         isFullPost
       >
         <ReactMarkdown children={post.text} />
       </Post> 
       <CommentsBlock
-        items={[
-          {
-            user: {
-              fullName: "Вася Пупкин",
-              avatarUrl: "https://mui.com/static/images/avatar/1.jpg",
-            },
-            text: "Это тестовый комментарий 555555",
-          },
-          {
-            user: {
-              fullName: "Иван Иванов",
-              avatarUrl: "https://mui.com/static/images/avatar/2.jpg",
-            },
-            text: "When displaying three lines or more, the avatar is not aligned at the top. You should set the prop to align the avatar at the top",
-          },
-        ]}
+        items={comments}
         isLoading={false}
       >
-        <Index />
+        {isAuth && <Index postId={post._id}/>}
       </CommentsBlock>
     </>
   );

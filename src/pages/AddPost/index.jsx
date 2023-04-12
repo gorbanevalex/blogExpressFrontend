@@ -8,15 +8,19 @@ import SimpleMDE from 'react-simplemde-editor';
 
 import 'easymde/dist/easymde.min.css';
 import styles from './AddPost.module.scss';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useParams } from 'react-router-dom';
 
 export const AddPost = () => {
+  const {id} = useParams();
+
   const [postId, setPostId] = React.useState('');
   const [imageUrl, setImageUrl] = React.useState('');
   const [textField, settextField] = React.useState('');
   const [titleField, setTitleField] = React.useState('');
   const [tagsField, setTagsField] = React.useState('');
   const fileInputRef = React.useRef(null);
+
+  const isEdited = Boolean(id);
 
   const handleChangeFile = () => {
     let file = fileInputRef.current.files[0];
@@ -37,6 +41,19 @@ export const AddPost = () => {
   const onChange = React.useCallback((textField) => {
     settextField(textField);
   }, []);
+
+  React.useEffect(()=>{
+    if(id){
+      axios.get(`posts/${id}`).then(res=>{
+        setImageUrl(res.data.imgUrl);
+        settextField(res.data.text);
+        setTitleField(res.data.title);
+        setTagsField(res.data.tags.join(','));
+      }).catch(err=>{
+        alert('Произошла ошибка при получении поста!');
+      })
+    }
+  },[]);
 
   const options = React.useMemo(
     () => ({
@@ -62,11 +79,19 @@ export const AddPost = () => {
       tags
     }
 
-    axios.post('/posts', params).then(res=>{
-      setPostId(res.data._id);
-    }).catch(err=>{
-      alert('Введите заголовок и текст!');
-    })
+    if(isEdited){
+      axios.patch(`/posts/${id}`,params).then(res=>{
+        setPostId(id);
+      }).catch(err=>{
+        alert('Произошла ошибка!')
+      })
+    }else{
+      axios.post(`/posts`, params).then(res=>{
+        setPostId(res.data._id);
+      }).catch(err=>{
+        alert('Введите заголовок и текст!');
+      })
+    }
   }
 
   if(postId){
@@ -108,7 +133,7 @@ export const AddPost = () => {
       <SimpleMDE className={styles.editor} value={textField} onChange={onChange} options={options} />
       <div className={styles.buttons}>
         <Button size="large" variant="contained" onClick={onSubmit}>
-          Опубликовать
+          {isEdited ? 'Сохранить' : 'Опубликовать'}
         </Button>
         <Link to="/">
           <Button size="large">Отмена</Button>

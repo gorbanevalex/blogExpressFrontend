@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../../axios";
 
-export const fetchPosts = createAsyncThunk("fetch/posts", async () => {
-  const { data } = await axios.get("/posts");
+export const fetchPosts = createAsyncThunk("fetch/posts", async (sortBy) => {
+  const { data } = await axios.post(`/posts/get`, { sortBy });
   return data;
 });
 
@@ -20,6 +20,7 @@ const initialState = {
     items: [],
     status: "loading",
   },
+  commentsSelect: [],
 };
 
 const postsSlice = createSlice({
@@ -30,6 +31,9 @@ const postsSlice = createSlice({
       state.posts.items = state.posts.items.filter(
         (post) => post._id !== action.payload
       );
+    },
+    changeComments: (state, action) => {
+      state.commentsSelect = action.payload;
     },
   },
   extraReducers: {
@@ -60,6 +64,6 @@ const postsSlice = createSlice({
   },
 });
 
-export const { removePost } = postsSlice.actions;
+export const { removePost, changeComments } = postsSlice.actions;
 
 export const postsReducer = postsSlice.reducer;
