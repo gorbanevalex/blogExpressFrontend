@@ -69,7 +69,7 @@ export const Registration = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.avatar} onClick={()=>fileInput.current.click()}>
           <input type="file" hidden ref={fileInput} onChange={fileChange} />
-          <Avatar sx={{ width: 100, height: 100 }} src={imgUrl ? `http://localhost:8000${imgUrl}` : ''}  />
+          <Avatar sx={{ width: 100, height: 100 }} src={imgUrl ? `http://45.141.76.148:8000${imgUrl}` : ''}  />
         </div>
         <TextField 
           className={styles.field} 
