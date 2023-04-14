@@ -14,7 +14,8 @@ const CommentsItem = ({isLoading, comment}) =>{
   axios.get(`/user/${comment.authorId}`).then(res=>{
    setUserData(res.data);
   })
- },[]);
+ },[comment]);
+
  return (
   <>
   <ListItem alignItems="flex-start">

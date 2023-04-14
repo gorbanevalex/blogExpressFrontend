@@ -4,11 +4,9 @@ import Tab from '@mui/material/Tab';
 import Grid from '@mui/material/Grid';
 
 import { useDispatch, useSelector } from 'react-redux';
-import axios from '../axios';
 
 import { Post } from '../components/Post';
 import { TagsBlock } from '../components/TagsBlock';
-import { CommentsBlock } from '../components/CommentsBlock';
 import { fetchPosts, fetchTags } from '../redux/slices/posts';
 
 export const Home = () => {
@@ -51,7 +49,7 @@ export const Home = () => {
               viewsCount={obj.viewsCount}
               commentsCount={obj.comments.length}
               tags={obj.tags}
-              isEditable={userData?.user._id === obj.author._id}
+              isEditable={userData?.user?._id === obj.author?._id}
             />
           ))}
         </Grid>

@@ -13,7 +13,6 @@ import { changeComments } from "../redux/slices/posts";
 export const FullPost = () => {
   const dispatch = useDispatch();
   const comments = useSelector(state=>state.posts.commentsSelect);
-
   const isAuth = useSelector(isAuthCheck);
   const navigate = useNavigate();
   const [post,setPost] = React.useState(null);
