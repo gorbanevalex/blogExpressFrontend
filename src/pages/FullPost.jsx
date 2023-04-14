@@ -38,7 +38,7 @@ export const FullPost = () => {
       <Post
         id={post._id}
         title={post.title}
-        imageUrl={post.imgUrl ? `http://localhost:8000${post.imgUrl}` : ''}
+        imageUrl={post.imgUrl ? `http://45.141.76.148:8000${post.imgUrl}` : ''}
         user={{
           avatarUrl: post.author.avatarUrl,
           fullName: post.author.nickname,

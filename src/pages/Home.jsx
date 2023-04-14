@@ -42,7 +42,7 @@ export const Home = () => {
               key={obj._id}
               id={obj._id}
               title={obj.title}
-              imageUrl={obj.imgUrl ? `http://localhost:8000${obj.imgUrl}` : '' }
+              imageUrl={obj.imgUrl ? `http://45.141.76.148:8000${obj.imgUrl}` : '' }
               user={{
                 avatarUrl: obj.author.avatarUrl ?? '',
                 fullName: obj.author.nickname,

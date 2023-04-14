@@ -22,7 +22,7 @@ const CommentsItem = ({isLoading, comment}) =>{
       {!userData ? (
         <Skeleton variant="circular" width={40} height={40} />
       ) : (
-        <Avatar src={userData.avatarUrl ? `http://localhost:8000${userData.avatarUrl}` : '/noavatar.png'}  />
+        <Avatar src={userData.avatarUrl ? `http://45.141.76.148:8000${userData.avatarUrl}` : '/noavatar.png'}  />
       )}
     </ListItemAvatar>
     {isLoading && !userData ? (

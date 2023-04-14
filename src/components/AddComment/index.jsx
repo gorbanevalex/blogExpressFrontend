@@ -31,7 +31,7 @@ export const Index = ({postId}) => {
       <div className={styles.root}>
         <Avatar
           classes={{ root: styles.avatar }}
-          src={userData.user.avatarUrl ? `http://localhost:8000${userData.user.avatarUrl}`: '/noavatar.png'}
+          src={userData.user.avatarUrl ? `http://45.141.76.148:8000${userData.user.avatarUrl}`: '/noavatar.png'}
         />
         <div className={styles.form}>
           <TextField
