@@ -20,7 +20,10 @@
   border-radius: 5px;
   padding: 0 10px;
   text-decoration: none;
-
+  @media (max-width: 470px) {
+    padding: 0 5px;
+    font-size: 12px;
+  }
   &:hover {
     background-color: #4361ee;
   }
@@ -29,6 +32,10 @@
 .buttons {
   button {
     margin-left: 10px;
+    @media (max-width: 460px) {
+      margin-left: 5px;
+      font-size: 13px;
+    }
   }
 
   a {

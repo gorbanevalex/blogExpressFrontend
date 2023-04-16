@@ -3,6 +3,9 @@
   padding: 50px;
   border: 1px solid #dedede;
   margin: 50px auto;
+  @media (max-width: 500px) {
+    width: 100%;
+  }
 }
 
 .field {
